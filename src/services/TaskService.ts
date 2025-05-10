@@ -31,7 +31,8 @@ export class TaskService {
   }
 
   async getAllTasks(): Promise<string[]> {
-    const tasks = await this.getTasksFromCache();
+    const tasks = (await this.getTasksFromCache()).reverse();
+    
     const mongoTasks = await TaskModel.find().lean();
     return [...tasks, ...mongoTasks.map((t) => t.text)];
   }

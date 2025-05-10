@@ -14,6 +14,7 @@ export async function initMQTTClient(taskService: TaskService) {
   client.on("connect", () => {
     logger.info("MQTT connected");
     client.subscribe("/add");
+    client.subscribe("/tasks/updates");
   });
 
   client.on("message", async (topic, message) => {
@@ -28,10 +29,15 @@ export async function initMQTTClient(taskService: TaskService) {
 
       logger.info(`Received task via MQTT: ${task}`);
       await taskService.addTask(task);
+      
+      const allTasks = await taskService.getAllTasks();
+      client.publish("/tasks/updates", JSON.stringify([...allTasks]));
     }
   });
 
   client.on("error", (err) => {
     logger.error("MQTT error:", err);
   });
+
+  return client;
 }

@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 
-const TaskSchema = new mongoose.Schema({
+const NoteSchema = new mongoose.Schema({
   text: { type: String, required: true },
   createdAt: { type: Date, default: Date.now },
 });
 
-export const TaskModel = mongoose.model("Task", TaskSchema);
+export const TaskModel = mongoose.model("assignment_indrayani", NoteSchema);

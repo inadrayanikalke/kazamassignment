@@ -16,24 +16,23 @@ async function startServer() {
 
   // MongoDB Connection
   await mongoose.connect(config.MONGO_URI, {
-  serverSelectionTimeoutMS: 5000,
-  socketTimeoutMS: 45000,
-});
+    serverSelectionTimeoutMS: 10000, // fail after 10s if can't connect
+    socketTimeoutMS: 45000,
+  });
   logger.info("MongoDB connected");
 
-   // Add mongoose disconnect listener
-  mongoose.connection.on('disconnected', () => {
-    logger.error('MongoDB disconnected');
+  // Add mongoose disconnect listener
+  mongoose.connection.on("disconnected", () => {
+    logger.error("MongoDB disconnected");
   });
 
-  mongoose.connection.on('error', (err) => {
-    logger.error('MongoDB connection error:', err);
+  mongoose.connection.on("error", (err) => {
+    logger.error("MongoDB connection error:", err);
   });
 
-  
   // Redis Connection
   const redisClient: RedisClientType = createClient({
-    url: config.REDIS_URL
+    url: config.REDIS_URL,
   });
   await redisClient.connect();
 
