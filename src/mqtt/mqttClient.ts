@@ -4,7 +4,7 @@ import { logger, taskSchema } from "../utils/logger";
 import { TaskService } from "../services/TaskService";
 
 export async function initMQTTClient(taskService: TaskService) {
-  const client = mqtt.connect(config.MQTT_BROKER, {
+  const client = mqtt.connect(`mqtts://${config.MQTT_BROKER}:${config.MQTT_PORT}`, {
     port: config.MQTT_PORT,
     username: config.MQTT_USERNAME,
     password: config.MQTT_PASSWORD,
